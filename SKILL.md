@@ -83,6 +83,7 @@ Do NOT ask about things you already detected. Keep questions specific and action
    - Use IMPORTANT/MUST sparingly (max 2-3 per file)
    - Don't describe tools Claude already knows
    - Don't duplicate README content
+   - For code style/pattern rules, point to canonical files instead of prose descriptions
 5. If content exceeds the line budget, use `@path` imports for progressive disclosure
 6. Present the draft to the user for review
 7. Write the file only after user approval
@@ -104,6 +105,8 @@ Read the existing CLAUDE.md and evaluate against `references/best-practices.md`:
 - **Over-emphasized**: too many IMPORTANT/MUST/ALWAYS/NEVER markers
 - **Stale**: references files, tools, or conventions that no longer exist
 - **File-by-file descriptions**: describes what each file does (Claude can read them)
+- **Generic/template content**: instructions copied from a template that don't match the actual project
+- **History not guidance**: instructions phrased as past events ("we migrated to X") instead of forward-looking rules ("use X for all new work")
 
 ### 2b. Auto-Detect Context Changes
 
@@ -134,7 +137,7 @@ Only modify the file after the user reviews and approves the changes.
 4. **Concise > comprehensive.** A 30-line CLAUDE.md that's followed beats a 200-line one that's ignored.
 5. **Use hooks and formatters instead of linting instructions.** Claude respects tool output; don't manually enforce style.
 6. **Use @path imports for progressive disclosure.** Keep root lean, add depth through references.
-7. **Prune regularly.** CLAUDE.md is living config, not a write-once document.
+7. **Maintain with the litmus test: "Would this mislead an agent?"** When code changes, ask if an outdated CLAUDE.md instruction would cause Claude to make a mistake. Update when contracts/boundaries change; skip when only implementation details change.
 
 ---
 

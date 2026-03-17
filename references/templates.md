@@ -42,8 +42,8 @@ npm run lint:fix           # auto-fix lint issues
 <brief description of project structure and key design decisions>
 
 # Conventions
-- Exports use named exports (no default exports)
-- API responses follow `{ data, error }` envelope pattern
+- Exports: follow pattern in src/utils/index.ts (named exports, no defaults)
+- API responses: follow envelope shape in src/types/api.ts `{ data, error }`
 - Database queries go through the repository layer, never direct SQL in handlers
 
 # Gotchas
@@ -160,6 +160,38 @@ Note: Home CLAUDE.md should be <30 lines. Only include preferences that apply to
 
 ---
 
+## Child/Subsystem CLAUDE.md
+
+```markdown
+# <Subsystem Name>
+
+## Purpose
+<one-line: what this subsystem does and its boundary within the larger project>
+
+## Entry Points
+- <primary file or function where execution enters this subsystem>
+- <secondary entry point, if any>
+
+## Patterns
+- Request validation: follow pattern in handlers/users.ts
+- Error handling: follow pattern in handlers/errors.ts
+- <other key patterns, pointing to canonical files>
+
+## Anti-Patterns
+- Do NOT call <other subsystem> directly; use the event bus
+- <other things that seem reasonable but are wrong here>
+
+## Invariants
+- <rules that must hold true or things break silently>
+
+## Pitfalls
+- <non-obvious things that have caused bugs before>
+```
+
+Use this for `packages/*/CLAUDE.md`, `src/subsystem/CLAUDE.md`, or any directory that has its own conventions. Stay under 30 lines.
+
+---
+
 ## Tips for All Templates
 
 1. **Delete sections you don't need.** Empty sections are worse than no sections.
@@ -167,3 +199,4 @@ Note: Home CLAUDE.md should be <30 lines. Only include preferences that apply to
 3. **Add your gotchas.** Templates can't know your project's unique pain points.
 4. **Stay under budget.** Count your lines against the location budget in the location guide.
 5. **Test it.** Start a fresh Claude Code session and see if it follows your instructions.
+6. **Point to files, not prose.** For code style and pattern rules, reference a canonical file instead of describing the convention in words. Pointers stay accurate as code evolves; prose rots.

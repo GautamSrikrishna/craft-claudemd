@@ -42,6 +42,24 @@ Include things Claude **cannot figure out** by reading the code:
 
 ---
 
+## Code Style: Pointers Over Prose
+
+When documenting code style or patterns, **point to canonical files** instead of describing rules in prose. Models exhibit "cognitive inertia" — they resist unconventional patterns described in text but readily follow examples they can read from actual files.
+
+Bad (prose rots as code evolves):
+```
+- Use named exports, no default exports
+- Error responses follow { code, message, details } shape
+```
+
+Good (stays accurate as code changes):
+```
+- Exports: follow pattern in src/utils/index.ts (named exports, no defaults)
+- Error responses: follow shape in src/types/errors.ts
+```
+
+---
+
 ## What to Exclude
 
 Exclude things Claude **can figure out** or that don't belong:
@@ -130,6 +148,29 @@ src/routes/ - Contains API route handlers
 ```
 Claude can explore the codebase. Only describe architecture that isn't obvious from structure.
 
+### 7. Downloaded/Generic Templates
+Bad:
+```
+# Conventions
+- Type hints required on all public functions
+- Use pathlib.Path over os.path
+- Async functions suffixed with _async
+```
+If these came from a template and your project doesn't actually use async or pathlib, they're noise. Every instruction must reflect your actual project, not a generic starter.
+
+### 8. History Instead of Guidance
+Bad:
+```
+We migrated from REST to GraphQL in Q3.
+We fixed the memory leak by switching to streaming responses.
+```
+Good:
+```
+All new endpoints must use GraphQL (no new REST endpoints).
+Use streaming responses for payloads >1MB to avoid memory issues.
+```
+CLAUDE.md is forward-looking guidance, not a changelog. Rephrase past events as actionable rules.
+
 ---
 
 ## Progressive Disclosure
@@ -176,7 +217,8 @@ IMPORTANT: Always use descriptive variable names.
 
 ## Maintenance
 
-- **Prune regularly.** Review every 2-4 weeks, remove outdated instructions.
+- **Apply the litmus test: "If an agent read this and worked on the code, would it make a mistake?"** If an outdated instruction would cause Claude to do the wrong thing, fix it immediately. If it's just stale but harmless, it's lower priority.
+- **Update when contracts change, skip when implementation changes.** If a public API, file convention, or architectural boundary shifts, update CLAUDE.md. If only internal implementation details changed, the code speaks for itself.
 - **Test with fresh sessions.** Start a new Claude Code session and see if it follows your CLAUDE.md correctly.
 - **Check into git.** CLAUDE.md is project configuration; treat it like code.
 - **Remove instructions that became code.** If you added a linter rule or hook, remove the corresponding CLAUDE.md instruction.
