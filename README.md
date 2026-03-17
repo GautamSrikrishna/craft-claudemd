@@ -61,6 +61,12 @@ craft-claudemd/
 
 ## Uninstall
 
+For a global install:
 ```bash
 rm -rf ~/.claude/skills/craft-claudemd
+```
+
+For a project-level install:
+```bash
+rm -rf /path/to/your/project/.claude/skills/craft-claudemd
 ```
